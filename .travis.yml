@@ -1,7 +1,7 @@
-jdk:
-  - openjdk11
+language: node_js
 
-language: java
+node_js:
+  - 10
 
 stages:
   - continousIntegration
@@ -9,6 +9,9 @@ stages:
 
 before_install:
   - chmod +x gradlew
+
+install:
+  - npm install -g newman
 
 addons:
   sonarcloud:
@@ -25,5 +28,5 @@ jobs:
         api-key: $HEROKU_API_KEY
         app: $HEROKU_STAGING_APP
       after_success:
-      # run newman skripts
+      script: newman run src/test/java/systemtests/collection/CRUD.postman_collection.json -e src/test/java/systemtests/environment/uek223advancedenv.postman_environment.json
 
